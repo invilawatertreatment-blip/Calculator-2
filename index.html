@@ -40,7 +40,6 @@
         .luxury-input-group { transition: all 0.3s ease; }
         .luxury-input-group:focus-within { border-color: #C5A059; box-shadow: 0 0 20px rgba(197, 160, 89, 0.15); transform: translateY(-2px); }
 
-        /* Setup Laporan PDF Strict McKinsey Memo Layout - 2 Halaman A4 */
         .pdf-stage { position: absolute; left: -99999px; top: 0; z-index: -999; width: 210mm; background-color: #ffffff; pointer-events: none; }
         .pdf-page { width: 210mm; height: 297mm; padding: 20mm; background: #ffffff; color: #001b44; position: relative; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-start; }
         .pdf-table th { background-color: #001b44; color: white; border: 1px solid #001b44; padding: 10px 12px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
@@ -68,13 +67,14 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch w-full mb-10">
-            <div class="lg:col-span-4 glass-panel p-6 md:p-8 border-t-4 border-slate-500 rounded-xl flex flex-col shadow-xl">
+            
+            <div class="lg:col-span-5 glass-panel p-6 md:p-8 border-t-4 border-slate-500 rounded-xl flex flex-col shadow-xl">
                 <div class="border-b border-white/10 pb-4 mb-6">
                     <h3 class="text-base md:text-lg font-bold text-white font-serif tracking-widest uppercase">I. Operational Input</h3>
-                    <p class="text-[10px] text-slate-400 mt-1">Baseline data tagihan utilitas pabrik Anda.</p>
+                    <p class="text-[10px] text-slate-400 mt-1">Baseline data tagihan utilitas pabrik & kawasan.</p>
                 </div>
 
-                <div class="space-y-5 flex-grow">
+                <div class="space-y-4 flex-grow">
                     <div class="relative luxury-input-group bg-[#081221] border border-slate-600 rounded-lg overflow-hidden shadow-inner">
                         <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 pt-3 pb-1">Volume Pemakaian Air</label>
                         <div class="flex items-center">
@@ -92,18 +92,26 @@
                         </div>
                     </div>
 
-                    <div class="relative luxury-input-group bg-[#081221] border border-slate-600 rounded-lg overflow-hidden shadow-inner">
-                        <label class="block text-[10px] font-bold text-legacyRed uppercase tracking-widest px-4 pt-3 pb-1">Tarif Retribusi Limbah</label>
-                        <div class="flex items-center">
-                            <span class="pl-4 pb-2 pt-1 text-slate-500 font-bold text-base h-full flex items-end">Rp</span>
-                            <input type="number" id="inp-waste" value="14000" oninput="runEngine()" class="w-full bg-transparent text-legacyRed font-bold text-2xl md:text-3xl px-4 pb-3 outline-none font-mono text-right tracking-wider">
-                            <span class="pr-4 pb-2 pt-1 text-slate-500 font-bold text-sm h-full flex items-end">/ m³</span>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="relative luxury-input-group bg-[#081221] border border-slate-600 rounded-lg overflow-hidden shadow-inner flex flex-col justify-center">
+                            <label class="block text-[9px] font-bold text-legacyRed uppercase tracking-widest px-3 pt-3 pb-1">Tarif Limbah / m³</label>
+                            <div class="flex items-center">
+                                <span class="pl-3 pb-2 pt-1 text-slate-500 font-bold text-sm h-full flex items-end">Rp</span>
+                                <input type="number" id="inp-waste" value="14000" oninput="runEngine()" class="w-full bg-transparent text-legacyRed font-bold text-xl px-2 pb-3 outline-none font-mono text-right tracking-wider">
+                            </div>
                         </div>
-                        <div class="bg-black/20 px-4 py-3 border-t border-slate-700/50">
-                            <p class="text-[9px] text-slate-400 font-medium italic text-justify leading-tight">
-                                *Surcharge kawasan yang otomatis tertagih bersama air PDAM. (Biarkan Rp 0 jika pabrik Stand-Alone di luar kawasan).
-                            </p>
+                        <div class="relative luxury-input-group bg-[#081221] border border-slate-600 rounded-lg overflow-hidden shadow-inner flex flex-col justify-center">
+                            <label class="block text-[9px] font-bold text-legacyRed uppercase tracking-widest px-3 pt-3 pb-1">Wastewater Factor</label>
+                            <div class="flex items-center">
+                                <input type="number" id="inp-waste-factor" value="85" oninput="runEngine()" class="w-full bg-transparent text-legacyRed font-bold text-xl px-3 pb-3 outline-none font-mono text-right tracking-wider">
+                                <span class="pr-3 pb-2 pt-1 text-slate-500 font-bold text-sm h-full flex items-end">%</span>
+                            </div>
                         </div>
+                    </div>
+                    <div class="bg-black/20 px-4 py-2 border border-slate-700/50 rounded-lg">
+                        <p class="text-[9px] text-slate-400 font-medium italic text-justify leading-tight">
+                            *Isi Tarif Limbah Rp 0 jika beroperasi Non-Kawasan. Faktor limbah menyesuaikan regulasi kawasan industri setempat.
+                        </p>
                     </div>
 
                     <div class="relative luxury-input-group bg-[#081221] border border-slate-600 rounded-lg overflow-hidden shadow-inner">
@@ -116,62 +124,64 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-3 glass-panel p-6 md:p-8 border-t-4 border-brandGold rounded-xl flex flex-col justify-between">
-                <div>
-                    <h3 class="text-base md:text-lg font-bold text-brandGold font-serif tracking-widest mb-6 uppercase border-b border-white/10 pb-3">II. Invila™ Logic</h3>
-                    <div class="space-y-4">
-                        <div class="bg-[#081221] border border-slate-700 p-4 rounded-lg flex justify-between items-center shadow-inner">
-                            <div>
-                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Target Recycling</p>
-                                <p class="text-[8px] text-brandGold mt-1 font-serif italic">Substitusi Pasokan</p>
-                            </div>
-                            <p class="text-2xl md:text-3xl font-bold font-mono text-white">80<span class="text-sm md:text-lg text-slate-500">%</span></p>
-                        </div>
-                        <div class="bg-[#081221] border border-slate-700 p-4 rounded-lg flex justify-between items-center shadow-inner">
-                            <div>
-                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Wastewater Factor</p>
-                                <p class="text-[8px] text-slate-500 mt-1 font-serif italic">Beban Buang</p>
-                            </div>
-                            <p class="text-2xl md:text-3xl font-bold font-mono text-slate-300">85<span class="text-xs md:text-sm text-slate-500 ml-1">%</span></p>
-                        </div>
-                        <div class="bg-brandGold/10 border border-brandGold/40 p-4 rounded-lg text-center mt-6 shadow-inner relative overflow-hidden">
-                            <div class="absolute -right-4 -top-4 w-12 h-12 bg-brandGold/20 blur-xl rounded-full"></div>
-                            <p class="text-[9px] font-bold text-brandGold uppercase tracking-widest mb-1">Invila™ WaaS Target</p>
-                            <p class="text-2xl font-bold text-white font-mono">Rp 6.000 <span class="text-[10px] text-slate-400 font-sans font-normal">/ m³</span></p>
+            <div class="lg:col-span-3 glass-panel p-6 md:p-8 border-t-4 border-brandGold rounded-xl flex flex-col shadow-xl">
+                <h3 class="text-base md:text-lg font-bold text-brandGold font-serif tracking-widest mb-6 uppercase border-b border-white/10 pb-3">II. Invila™ Logic</h3>
+                <div class="space-y-5">
+                    
+                    <div class="relative luxury-input-group bg-[#081221] border border-slate-700 rounded-lg overflow-hidden shadow-inner">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 pt-4 pb-1">Target Recycling</label>
+                        <p class="text-[8px] text-brandGold font-serif italic px-4 pb-1">Substitusi Pasokan</p>
+                        <div class="flex items-center">
+                            <input type="number" id="inp-recycle" value="80" oninput="runEngine()" class="w-full bg-transparent text-white font-bold text-3xl px-4 pb-4 outline-none font-mono text-right tracking-wider">
+                            <span class="pr-4 pb-3 pt-1 text-slate-500 font-bold text-sm h-full flex items-end">%</span>
                         </div>
                     </div>
+
+                    <div class="relative luxury-input-group bg-brandGold/10 border border-brandGold/40 rounded-lg overflow-hidden shadow-inner mt-4">
+                        <div class="absolute -right-4 -top-4 w-12 h-12 bg-brandGold/20 blur-xl rounded-full"></div>
+                        <label class="block text-[10px] font-bold text-brandGold uppercase tracking-widest px-4 pt-4 pb-2 text-center relative z-10">Invila™ WaaS Target</label>
+                        <div class="flex items-center justify-center relative z-10">
+                            <span class="pl-4 pb-3 pt-1 text-brandGold font-bold text-xl h-full flex items-end">Rp</span>
+                            <input type="number" id="inp-waas" value="6000" oninput="runEngine()" class="w-auto max-w-[140px] bg-transparent text-white font-bold text-3xl px-2 pb-4 outline-none font-mono text-center tracking-wider">
+                            <span class="pr-4 pb-3 pt-1 text-slate-400 font-normal text-xs h-full flex items-end">/ m³</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-auto border-t border-white/10 pt-4">
+                    <p class="text-[9px] text-slate-400 italic leading-relaxed text-justify">
+                        *Parameter ini mendisrupsi biaya air primer dan meruntuhkan dasar tagihan Surcharge Limbah.
+                    </p>
                 </div>
             </div>
 
-            <div class="lg:col-span-5 glass-panel p-6 md:p-10 border-t-4 border-successGreen rounded-xl flex flex-col relative overflow-hidden shadow-2xl">
+            <div class="lg:col-span-4 glass-panel p-6 md:p-8 border-t-4 border-successGreen rounded-xl flex flex-col relative overflow-hidden shadow-2xl">
                 <div class="absolute -right-20 -top-20 w-64 h-64 bg-successGreen/10 blur-[80px] rounded-full pointer-events-none"></div>
                 <div class="border-b border-white/10 pb-4 mb-6 relative z-10">
                     <h3 class="text-base md:text-lg font-bold text-successGreen font-serif tracking-widest uppercase">III. Financial Output</h3>
-                    <p class="text-[10px] text-slate-400 mt-1">Dampak langsung terhadap Laba Bersih & Neraca.</p>
+                    <p class="text-[10px] text-slate-400 mt-1">Dampak langsung terhadap Laba Bersih.</p>
                 </div>
                 <div class="flex flex-col justify-center flex-grow relative z-10">
                     <div class="mb-6">
-                        <p class="text-[10px] font-bold text-slate-300 uppercase tracking-[0.2em] mb-2">Laba Bersih Tahunan (Annual EBITDA Gain)</p>
-                        <h1 id="out-annual" class="text-4xl md:text-5xl font-bold font-serif text-successGreen tracking-tighter leading-none py-2 drop-shadow-[0_0_20px_rgba(16,185,129,0.3)]">Rp 0</h1>
+                        <p class="text-[10px] font-bold text-slate-300 uppercase tracking-[0.2em] mb-2">Laba Bersih Tahunan (EBITDA Gain)</p>
+                        <h1 id="out-annual" class="text-4xl lg:text-5xl font-bold font-serif text-successGreen tracking-tighter leading-none py-2 drop-shadow-[0_0_20px_rgba(16,185,129,0.3)]">Rp 0</h1>
                     </div>
-                    <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div class="bg-[#081221] border border-successGreen/30 p-4 rounded-lg shadow-inner border-l-2 border-l-successGreen">
-                            <p class="text-[9px] text-slate-500 uppercase tracking-widest font-bold mb-1">Suntikan Kas / Bulan</p>
-                            <p id="out-monthly" class="text-lg md:text-xl font-bold text-successGreen font-mono tracking-tight">Rp 0</p>
+                    <div class="space-y-3 mb-6">
+                        <div class="bg-[#081221] border border-successGreen/30 p-3 rounded-lg shadow-inner flex justify-between items-center">
+                            <p class="text-[9px] text-slate-400 uppercase tracking-widest font-bold">Pemulihan Kas / Bln</p>
+                            <p id="out-monthly" class="text-sm font-bold text-successGreen font-mono">Rp 0</p>
                         </div>
-                        <div class="bg-[#081221] border border-white/5 p-4 rounded-lg shadow-inner">
-                            <p class="text-[9px] text-slate-500 uppercase tracking-widest font-bold mb-1">Akumulasi Laba (5 Tahun)</p>
-                            <p id="out-5year" class="text-lg md:text-xl font-bold text-white font-mono tracking-tight opacity-90">Rp 0</p>
+                        <div class="bg-[#081221] border border-white/5 p-3 rounded-lg shadow-inner flex justify-between items-center">
+                            <p class="text-[9px] text-slate-400 uppercase tracking-widest font-bold">Akumulasi (5 Tahun)</p>
+                            <p id="out-5year" class="text-sm font-bold text-white font-mono opacity-90">Rp 0</p>
                         </div>
                     </div>
-                    <div class="bg-gradient-to-r from-brandGold/20 to-transparent border border-brandGold/30 p-5 rounded-lg flex justify-between items-center shadow-lg">
-                        <div>
-                            <p class="text-[10px] font-bold text-brandGold uppercase tracking-widest mb-1">CapEx Exposure Avoided</p>
-                            <p id="out-capex" class="text-xl md:text-2xl font-bold font-serif text-brandGold">Rp 0</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Project ROI</p>
-                            <p class="text-lg font-bold font-serif text-white uppercase tracking-widest">Infinite</p>
+                    <div class="bg-gradient-to-r from-brandGold/20 to-transparent border border-brandGold/30 p-4 rounded-lg flex flex-col justify-center shadow-lg mt-auto">
+                        <p class="text-[9px] font-bold text-brandGold uppercase tracking-widest mb-1">CapEx Exposure Avoided</p>
+                        <p id="out-capex" class="text-xl font-bold font-serif text-brandGold mb-2">Rp 0</p>
+                        <div class="border-t border-brandGold/20 pt-2 flex justify-between items-center">
+                            <p class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Project ROI</p>
+                            <p class="text-xs font-bold font-serif text-white uppercase tracking-widest">Infinite</p>
                         </div>
                     </div>
                 </div>
@@ -189,12 +199,15 @@
             </button>
         </div>
 
+        <div class="text-center mt-2 text-slate-600 text-[10px] font-bold uppercase tracking-[0.4em] pb-10">
+            <p>Invila™ Corporate Advisory | Strictly Confidential | &copy; 2026</p>
+        </div>
+
     </div>
 
     <div class="pdf-stage">
         
         <div id="pdf-page-1" class="pdf-page">
-            
             <div class="border-b-4 border-mckNavy pb-4 mb-6 flex justify-between items-end">
                 <div class="flex items-center gap-4">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" class="h-8 w-8 object-contain" alt="" onerror="this.style.display='none'">
@@ -260,7 +273,6 @@
         </div>
 
         <div id="pdf-page-2" class="pdf-page">
-            
             <div class="border-b border-slate-300 pb-2 mb-6 flex justify-between items-center">
                 <p class="text-[9px] font-bold text-mckNavy uppercase tracking-widest">Invila™ Strategic Memo</p>
                 <p class="text-[9px] text-slate-500 font-mono" id="pdf-ref-2">REF: AUTOGEN</p>
@@ -280,7 +292,7 @@
                         <tr>
                             <td class="font-bold font-sans p-4">Biaya Air Bersih Primer</td>
                             <td class="border-r border-slate-300 bg-slate-50 p-4">100% Beli Pasokan Komersial<br><strong id="pdf-tbl-ex-water" class="text-[14px] text-legacyRed block mt-1">Rp 0</strong></td>
-                            <td class="p-4">Substitusi 80% Invila + 20% Cadangan<br><strong id="pdf-tbl-in-water" class="text-[14px] text-successGreen block mt-1">Rp 0</strong></td>
+                            <td class="p-4"><span id="pdf-desc-tbl-in-water" class="font-sans text-[9px] block text-slate-500">Substitusi + Cadangan</span><strong id="pdf-tbl-in-water" class="text-[14px] text-successGreen block mt-1">Rp 0</strong></td>
                         </tr>
                         <tr>
                             <td id="pdf-tbl-title-waste" class="font-bold font-sans p-4">Surcharge Retribusi Limbah</td>
@@ -302,7 +314,6 @@
 
             <div class="flex-grow">
                 <h2 class="text-[12px] font-black text-mckNavy uppercase tracking-widest mb-4 border-b border-mckNavy pb-1">Bagian V: Valuasi Strategis & Mitigasi Risiko (CFO Viewpoint)</h2>
-                
                 <div class="grid grid-cols-2 gap-5">
                     <div class="bg-mckNavy text-white p-5 rounded-lg shadow-md border-b-4 border-[#C5A059] relative overflow-hidden">
                         <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-[#C5A059]/20 blur-xl rounded-full"></div>
@@ -339,9 +350,6 @@
         // WEBHOOK URL UNTUK RADAR MARKAS
         const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwZN1HDW_S3-npjk-szBJ2K4FqjP2pkWYiuXFPz7vKKZnF-c2oUxTBOBE61MRfT2Hh_/exec";
 
-        const WAAS_RECYCLE_RATE = 0.80;        
-        const WAAS_TARIFF = 6000;              
-        const WASTEWATER_SURCHARGE = 0.85;    
         const CAPEX_PER_LPS = 300000000;      
 
         let globalRef = "";
@@ -380,27 +388,23 @@
 
         function renderPdfChart(exWater, exWaste, inWater, inWaste) {
             const ctx = document.getElementById('pdf-chart').getContext('2d');
-            
-            if (pdfChartInstance) {
-                pdfChartInstance.destroy();
-            }
+            if (pdfChartInstance) pdfChartInstance.destroy();
 
-            // McKinsey Style Stacked Bar Chart
             pdfChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: ['Status Quo (Baseline OPEX)', 'Intervensi Invila™ WaaS'],
                     datasets: [
                         {
-                            label: 'Biaya Air Bersih Primer',
+                            label: 'Biaya Air Bersih',
                             data: [exWater, inWater],
-                            backgroundColor: ['#64748b', '#10b981'], // Slate vs Green
+                            backgroundColor: ['#64748b', '#10b981'],
                             barThickness: 80
                         },
                         {
-                            label: 'Surcharge Retribusi Limbah',
+                            label: 'Retribusi Limbah',
                             data: [exWaste, inWaste],
-                            backgroundColor: ['#f43f5e', '#059669'], // Red vs Dark Green
+                            backgroundColor: ['#f43f5e', '#059669'],
                             barThickness: 80
                         }
                     ]
@@ -408,7 +412,7 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    animation: false, // Wajib mati agar html2canvas bisa foto langsung
+                    animation: false,
                     scales: {
                         x: { stacked: true, grid: { display: false } },
                         y: { 
@@ -428,23 +432,28 @@
         }
 
         function runEngine() {
+            // Tarik seluruh Input Dinamis
             const vol = parseFloat(document.getElementById('inp-flow').value) || 0;
             const pdam = parseFloat(document.getElementById('inp-pdam').value) || 0;
             const waste = parseFloat(document.getElementById('inp-waste').value) || 0;
             const days = parseFloat(document.getElementById('inp-days').value) || 0;
+            
+            const wasteFactor = (parseFloat(document.getElementById('inp-waste-factor').value) || 0) / 100;
+            const recycleRate = (parseFloat(document.getElementById('inp-recycle').value) || 0) / 100;
+            const waasTariff = parseFloat(document.getElementById('inp-waas').value) || 0;
 
             const lps = (vol * 1000) / 86400;
             const capexCovered = lps * CAPEX_PER_LPS;
 
             const exWaterCostMonthly = (vol * pdam) * days;
-            const exWasteCostMonthly = (vol * WASTEWATER_SURCHARGE * waste) * days;
+            const exWasteCostMonthly = (vol * wasteFactor * waste) * days;
             const exTotalMonthly = exWaterCostMonthly + exWasteCostMonthly;
 
-            const inRecycleMonthly = (vol * WAAS_RECYCLE_RATE * WAAS_TARIFF) * days;
-            const inMakeupMonthly = (vol * (1 - WAAS_RECYCLE_RATE) * pdam) * days;
+            const inRecycleMonthly = (vol * recycleRate * waasTariff) * days;
+            const inMakeupMonthly = (vol * (1 - recycleRate) * pdam) * days;
             const inWaterTotalMonthly = inRecycleMonthly + inMakeupMonthly;
             
-            const inWasteCostMonthly = (vol * (1 - WAAS_RECYCLE_RATE) * WASTEWATER_SURCHARGE * waste) * days;
+            const inWasteCostMonthly = (vol * (1 - recycleRate) * wasteFactor * waste) * days;
             const inTotalMonthly = inWaterTotalMonthly + inWasteCostMonthly;
 
             const saveMonthly = exTotalMonthly - inTotalMonthly;
@@ -452,11 +461,8 @@
             const save5Year = saveYearly * 5; 
 
             let reductionPct = 0;
-            if(exTotalMonthly > 0) {
-                reductionPct = ((saveMonthly / exTotalMonthly) * 100).toFixed(1);
-            }
+            if(exTotalMonthly > 0) reductionPct = ((saveMonthly / exTotalMonthly) * 100).toFixed(1);
 
-            // Render Chart
             renderPdfChart(exWaterCostMonthly, exWasteCostMonthly, inWaterTotalMonthly, inWasteCostMonthly);
 
             // ====================================================
@@ -464,17 +470,20 @@
             // ====================================================
             if (waste === 0) {
                 setTxt('pdf-narrative-leakage', `Fasilitas saat ini terkunci dalam ketergantungan absolut pada pasokan air komersial dengan harga premium. Ketiadaan kemandirian pasokan (<i>Water Sovereignty</i>) ini menciptakan in-efisiensi Harga Pokok Produksi (HPP) senilai <strong class="text-legacyRed font-mono">${fmtRp(exTotalMonthly)}/bulan</strong>, yang mengekspos perusahaan pada pembengkakan OPEX dan risiko gangguan operasional tanpa <i>hedge</i> yang memadai.`);
-                setTxt('pdf-narrative-solution', `Model <strong class="text-mckNavy">Invila™ WaaS</strong> mengeksekusi <i>Tariff Arbitrage</i> melalui infrastruktur daur ulang mandiri (Tarif Tetap <strong class="text-successGreen font-mono">Rp ${numFormat(WAAS_TARIFF)}/m³</strong>). Dieksekusi melalui <i>Asset-Light Strategy</i> (Zero CapEx) dan murni <i>Off-Balance Sheet</i>, manuver ini mengubah liabilitas masa lalu menjadi efisiensi tunai murni yang menyuntikkan likuiditas ke Laba Bersih (EBITDA) perusahaan sejak Hari Pertama.`);
-                setTxt('pdf-tbl-title-waste', 'Surcharge Air Limbah (Rp 0)');
+                setTxt('pdf-narrative-solution', `Model <strong class="text-mckNavy">Invila™ WaaS</strong> mengeksekusi <i>Tariff Arbitrage</i> dengan mensubstitusi ${Math.round(recycleRate * 100)}% pasokan air melalui infrastruktur daur ulang mandiri (Tarif Tetap <strong class="text-successGreen font-mono">Rp ${numFormat(waasTariff)}/m³</strong>). Dieksekusi melalui <i>Asset-Light Strategy</i> (Zero CapEx) dan murni <i>Off-Balance Sheet</i>, manuver ini menyuntikkan likuiditas ke Laba Bersih perusahaan sejak Hari Pertama.`);
+                
+                setTxt('pdf-tbl-title-waste', `Surcharge Air Limbah (${Math.round(wasteFactor * 100)}%)`);
                 setTxt('pdf-desc-tbl-ex-waste', "Pabrik Non-Kawasan");
                 setTxt('pdf-desc-tbl-in-waste', "Bebas Surcharge Kawasan");
             } else {
                 setTxt('pdf-narrative-leakage', `Berdasarkan audit komparatif, fasilitas beroperasi di bawah in-efisiensi struktural akibat "Beban Ganda": Tarif Air Komersial ditambah <i>Fixed Wastewater Surcharge</i> kawasan. Surcharge limbah ini dipatok kaku dari 100% volume air yang dibeli, menciptakan <i>sunk cost</i> sebesar <strong class="text-legacyRed font-mono">${fmtRp(exTotalMonthly)}/bulan</strong> yang secara masif dan permanen menggerus margin EBITDA perusahaan.`);
-                setTxt('pdf-narrative-solution', `Sebagai sebuah mahakarya rekayasa finansial, <strong class="text-mckNavy">Invila™ WaaS</strong> mendisrupsi struktur biaya ini. Dengan mensubstitusi 80% pasokan air, Invila otomatis <b>meruntuhkan dasar perhitungan tagihan limbah kawasan</b>. <i>Waterfall Surcharge Hack</i> ini bukan sekadar 'air murah', melainkan peretasan struktural yang menyuntikkan laba instan secara <i>Off-Balance Sheet</i> tanpa pengeluaran investasi (CapEx) sepeser pun.`);
-                setTxt('pdf-tbl-title-waste', `Wastewater Surcharge (${WASTEWATER_SURCHARGE * 100}%)`);
+                setTxt('pdf-narrative-solution', `Sebagai sebuah mahakarya rekayasa finansial, <strong class="text-mckNavy">Invila™ WaaS</strong> mendisrupsi struktur biaya ini. Dengan mensubstitusi ${Math.round(recycleRate * 100)}% pasokan air (Tarif Tetap <strong class="text-successGreen font-mono">Rp ${numFormat(waasTariff)}/m³</strong>), Invila otomatis <b>meruntuhkan dasar perhitungan tagihan limbah kawasan</b>. <i>Waterfall Surcharge Hack</i> ini menyuntikkan laba instan secara <i>Off-Balance Sheet</i> tanpa pengeluaran investasi.`);
+                
+                setTxt('pdf-tbl-title-waste', `Wastewater Surcharge (${Math.round(wasteFactor * 100)}%)`);
                 setTxt('pdf-desc-tbl-ex-waste', "Dihitung dari 100% Vol Air Kawasan");
-                setTxt('pdf-desc-tbl-in-waste', "Disrupsi Struktural! (Anjlok 80%)");
+                setTxt('pdf-desc-tbl-in-waste', `Disrupsi Struktural! (Anjlok ${Math.round(recycleRate * 100)}%)`);
             }
+            setTxt('pdf-desc-tbl-in-water', `Substitusi ${Math.round(recycleRate * 100)}% + Cadangan`);
 
             // WEB UI UPDATE
             setTxt('out-capex', fmtMakro(capexCovered));
@@ -525,14 +534,11 @@
             setTimeout(async () => {
                 try {
                     const { jsPDF } = window.jspdf;
-                    // PDF Format A4 Portrait
                     const doc = new jsPDF('p', 'mm', 'a4');
                     
-                    // Render Halaman 1
                     const canvas1 = await html2canvas(document.getElementById('pdf-page-1'), { scale: 3, useCORS: true, logging: false });
                     doc.addImage(canvas1.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, 210, 297);
                     
-                    // Render Halaman 2
                     doc.addPage();
                     const canvas2 = await html2canvas(document.getElementById('pdf-page-2'), { scale: 3, useCORS: true, logging: false });
                     doc.addImage(canvas2.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, 210, 297);
